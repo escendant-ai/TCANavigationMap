@@ -1,0 +1,438 @@
+{
+  "entryPath" : [
+    {
+      "feature" : "AppFeature"
+    }
+  ],
+  "features" : [
+    {
+      "accessibilityIdentifiers" : [
+
+      ],
+      "delegatesSent" : [
+
+      ],
+      "dependencies" : [
+
+      ],
+      "destinations" : [
+
+      ],
+      "embeds" : [
+        {
+          "feature" : "Contacts",
+          "property" : "contacts"
+        },
+        {
+          "feature" : "Settings",
+          "property" : "settings"
+        }
+      ],
+      "external" : false,
+      "file" : "Sources/AppFeature.swift",
+      "name" : "AppFeature",
+      "otherUIActions" : [
+
+      ],
+      "presentedBy" : [
+
+      ],
+      "screenNames" : [
+
+      ],
+      "serviceCalls" : [
+
+      ],
+      "views" : [
+        "AppView (Sources/AppFeature.swift)"
+      ]
+    },
+    {
+      "accessibilityIdentifiers" : [
+
+      ],
+      "delegatesSent" : [
+
+      ],
+      "dependencies" : [
+        "contactsClient"
+      ],
+      "destinations" : [
+        {
+          "caseName" : "add",
+          "feature" : "AddContact",
+          "presentedAs" : [
+            {
+              "style" : "sheet"
+            }
+          ],
+          "slot" : "destination",
+          "triggers" : [
+            {
+              "action" : "addButtonTapped",
+              "controls" : [
+                {
+                  "action" : "addButtonTapped",
+                  "control" : "Button \"Add contact\" in .toolbar on List",
+                  "file" : "Sources/Contacts/Contacts.swift",
+                  "site" : "body"
+                }
+              ]
+            }
+          ],
+          "type" : "AddContact"
+        },
+        {
+          "caseName" : "detail",
+          "feature" : "ContactDetail",
+          "presentedAs" : [
+            {
+              "style" : "navigationDestination"
+            }
+          ],
+          "slot" : "destination",
+          "triggers" : [
+            {
+              "action" : "rows.element.delegate.open",
+              "controls" : [
+                {
+                  "action" : "tapped",
+                  "chain" : [
+                    "tapped"
+                  ],
+                  "control" : "Button in ForEach",
+                  "file" : "Sources/Contacts/Contacts.swift",
+                  "reducer" : "ContactRow",
+                  "site" : "body"
+                }
+              ]
+            }
+          ],
+          "type" : "ContactDetail"
+        }
+      ],
+      "embeds" : [
+        {
+          "feature" : "ContactRow",
+          "property" : "rows"
+        }
+      ],
+      "external" : false,
+      "file" : "Sources/Contacts/Contacts.swift",
+      "name" : "Contacts",
+      "otherUIActions" : [
+        {
+          "action" : "onAppear",
+          "control" : ".onAppear on List in NavigationStack",
+          "file" : "Sources/Contacts/Contacts.swift",
+          "site" : "body"
+        }
+      ],
+      "presentedBy" : [
+        "AppFeature"
+      ],
+      "screenNames" : [
+
+      ],
+      "serviceCalls" : [
+        "contactsClient.fetchAll"
+      ],
+      "views" : [
+        "ContactsView (Sources/Contacts/Contacts.swift)"
+      ]
+    },
+    {
+      "accessibilityIdentifiers" : [
+
+      ],
+      "delegatesSent" : [
+        "open"
+      ],
+      "dependencies" : [
+
+      ],
+      "destinations" : [
+
+      ],
+      "embeds" : [
+
+      ],
+      "external" : false,
+      "file" : "Sources/Contacts/Contacts.swift",
+      "name" : "ContactRow",
+      "otherUIActions" : [
+
+      ],
+      "presentedBy" : [
+        "Contacts"
+      ],
+      "screenNames" : [
+
+      ],
+      "serviceCalls" : [
+
+      ],
+      "views" : [
+
+      ]
+    },
+    {
+      "accessibilityIdentifiers" : [
+
+      ],
+      "delegatesSent" : [
+
+      ],
+      "dependencies" : [
+
+      ],
+      "destinations" : [
+
+      ],
+      "embeds" : [
+
+      ],
+      "external" : false,
+      "file" : "Sources/Contacts/Contacts.swift",
+      "name" : "AddContact",
+      "otherUIActions" : [
+
+      ],
+      "presentedBy" : [
+        "Contacts"
+      ],
+      "screenNames" : [
+
+      ],
+      "serviceCalls" : [
+
+      ],
+      "views" : [
+
+      ]
+    },
+    {
+      "accessibilityIdentifiers" : [
+
+      ],
+      "delegatesSent" : [
+        "didDelete"
+      ],
+      "dependencies" : [
+
+      ],
+      "destinations" : [
+        {
+          "caseName" : "deleteConfirmation",
+          "presentedAs" : [
+            {
+              "style" : "alert"
+            }
+          ],
+          "slot" : "alert",
+          "triggers" : [
+            {
+              "action" : "deleteButtonTapped",
+              "controls" : [
+                {
+                  "action" : "deleteButtonTapped",
+                  "control" : "Button \"Delete contact\" in Form",
+                  "file" : "Sources/Contacts/ContactDetail.swift",
+                  "site" : "body"
+                }
+              ]
+            }
+          ],
+          "type" : "AlertState<Action.Alert>"
+        },
+        {
+          "feature" : "EditContact",
+          "presentedAs" : [
+            {
+              "style" : "sheet"
+            }
+          ],
+          "slot" : "edit",
+          "triggers" : [
+            {
+              "action" : "editButtonTapped",
+              "controls" : [
+                {
+                  "action" : "editButtonTapped",
+                  "control" : "Button \"Edit\" in Form",
+                  "file" : "Sources/Contacts/ContactDetail.swift",
+                  "site" : "body"
+                }
+              ]
+            }
+          ],
+          "type" : "EditContact"
+        }
+      ],
+      "embeds" : [
+
+      ],
+      "external" : false,
+      "file" : "Sources/Contacts/ContactDetail.swift",
+      "name" : "ContactDetail",
+      "otherUIActions" : [
+
+      ],
+      "presentedBy" : [
+        "Contacts"
+      ],
+      "screenNames" : [
+
+      ],
+      "serviceCalls" : [
+
+      ],
+      "views" : [
+        "ContactDetailView (Sources/Contacts/ContactDetail.swift)"
+      ]
+    },
+    {
+      "accessibilityIdentifiers" : [
+
+      ],
+      "delegatesSent" : [
+
+      ],
+      "dependencies" : [
+
+      ],
+      "destinations" : [
+
+      ],
+      "embeds" : [
+
+      ],
+      "external" : false,
+      "file" : "Sources/Contacts/ContactDetail.swift",
+      "name" : "EditContact",
+      "otherUIActions" : [
+
+      ],
+      "presentedBy" : [
+        "ContactDetail"
+      ],
+      "screenNames" : [
+
+      ],
+      "serviceCalls" : [
+
+      ],
+      "views" : [
+
+      ]
+    },
+    {
+      "accessibilityIdentifiers" : [
+
+      ],
+      "delegatesSent" : [
+
+      ],
+      "dependencies" : [
+
+      ],
+      "destinations" : [
+        {
+          "feature" : "About",
+          "presentedAs" : [
+            {
+              "condition" : "!(sizeClass == .compact)",
+              "style" : "popover"
+            },
+            {
+              "condition" : "sizeClass == .compact",
+              "style" : "sheet"
+            }
+          ],
+          "slot" : "about",
+          "triggers" : [
+            {
+              "action" : "aboutButtonTapped",
+              "controls" : [
+                {
+                  "action" : "aboutButtonTapped",
+                  "control" : "Button \"About\"",
+                  "file" : "Sources/Settings/Settings.swift",
+                  "site" : "body"
+                }
+              ]
+            }
+          ],
+          "type" : "About"
+        }
+      ],
+      "embeds" : [
+
+      ],
+      "external" : false,
+      "file" : "Sources/Settings/Settings.swift",
+      "name" : "Settings",
+      "otherUIActions" : [
+
+      ],
+      "presentedBy" : [
+        "AppFeature"
+      ],
+      "screenNames" : [
+        "Settings"
+      ],
+      "serviceCalls" : [
+
+      ],
+      "views" : [
+        "SettingsView (Sources/Settings/Settings.swift)"
+      ]
+    },
+    {
+      "accessibilityIdentifiers" : [
+
+      ],
+      "delegatesSent" : [
+
+      ],
+      "dependencies" : [
+
+      ],
+      "destinations" : [
+
+      ],
+      "embeds" : [
+
+      ],
+      "external" : false,
+      "file" : "Sources/Settings/Settings.swift",
+      "name" : "About",
+      "otherUIActions" : [
+
+      ],
+      "presentedBy" : [
+        "Settings"
+      ],
+      "screenNames" : [
+
+      ],
+      "serviceCalls" : [
+
+      ],
+      "views" : [
+
+      ]
+    }
+  ],
+  "otherRoots" : [
+
+  ],
+  "regenerate" : "tca-navmap AppFeature --sources Sources --ignore Launcher --screen-name-modifier trackScreen",
+  "root" : "AppFeature",
+  "unreachable" : [
+    {
+      "file" : "Sources/Debug/Launcher.swift",
+      "name" : "Playground"
+    }
+  ]
+}
