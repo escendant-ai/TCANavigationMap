@@ -28,6 +28,22 @@ struct ConfigurationTests {
     }
 
     @Test
+    func aControlIsTitledByAConfiguredTitleLabelAndNotByAConfiguredIconView() {
+        let button = "Button {\n            store.send(.open)\n        } label: {\n            Text(\"Open\")\n        }"
+        let card = #"Card(icon: Glyph("chevron"), badge: "New", heading: "Open detail") { store.send(.open) }"#
+        let source = homeSource.replacingOccurrences(of: button, with: card)
+        let markdown = { (configuration: Configuration) in
+            GraphBuilder(sources: [(file: "/repo/App/Home.swift", text: source)], configuration: configuration)
+                .build(root: "Home", boundaries: [], regenerate: "tca-navmap Home", relativeTo: "/repo").markdown
+        }
+
+        #expect(source.contains(card))
+        #expect(markdown(Configuration(appRoot: "Home")).contains(#"via `.open` ← Card "chevron""#))
+        #expect(markdown(Configuration(appRoot: "Home", iconViews: ["Glyph"])).contains(#"via `.open` ← Card "New""#))
+        #expect(markdown(Configuration(appRoot: "Home", titleLabels: ["heading"])).contains(#"via `.open` ← Card "Open detail""#))
+    }
+
+    @Test
     func aStoreCreatedForTheAppRootOrAnIgnoredReducerIsNotAnotherRoot() {
         #expect(map().otherRoots == ["Playground"])
         #expect(map(Configuration(appRoot: "Home", ignoredReducers: ["Playground"])).otherRoots.isEmpty)

@@ -17,6 +17,8 @@ struct Options: Equatable {
     var ignoredReducers: Set<String> = []
     var conditionModifiers: Set<String> = ["if"]
     var screenNameModifiers: Set<String> = []
+    var titleLabels: Set<String> = ["title", "label"]
+    var iconViews: Set<String> = ["Image"]
     var outDir: String
 
     /// The reducer the map is drawn from.
@@ -27,7 +29,9 @@ struct Options: Equatable {
             appRoot: appRoot,
             ignoredReducers: ignoredReducers,
             conditionModifiers: conditionModifiers,
-            screenNameModifiers: screenNameModifiers
+            screenNameModifiers: screenNameModifiers,
+            titleLabels: titleLabels,
+            iconViews: iconViews
         )
     }
 
@@ -42,6 +46,8 @@ struct Options: Equatable {
       --ignore <Reducer>[,<Reducer>…]    reducers that are not a place a user goes, such as a debug launcher
       --condition-modifier <name>[,…]    modifiers that apply their content conditionally (default: if)
       --screen-name-modifier <name>[,…]  modifiers that name a screen with a string literal
+      --title-label <name>[,…]           argument labels that hold a control's title (default: title,label)
+      --icon-view <name>[,…]             views whose string literal names an icon (default: Image)
       --out <dir>                        where <Root>.md and <Root>.json are written (default: navigation-map)
       --help                             show this
 
@@ -86,6 +92,8 @@ extension Options {
         let ignored = try list("--ignore")
         let conditions = try list("--condition-modifier")
         let screenNames = try list("--screen-name-modifier")
+        let titleLabels = try list("--title-label")
+        let iconViews = try list("--icon-view")
         let out = try value("--out")
 
         if let unknown = remaining.first(where: { $0.hasPrefix("-") }) { throw OptionsError.invalid("unknown option \(unknown)") }
@@ -102,6 +110,8 @@ extension Options {
             ignoredReducers: Set(ignored ?? []),
             conditionModifiers: Set(conditions ?? ["if"]),
             screenNameModifiers: Set(screenNames ?? []),
+            titleLabels: Set(titleLabels ?? ["title", "label"]),
+            iconViews: Set(iconViews ?? ["Image"]),
             outDir: absolute(out ?? "navigation-map")
         )
     }

@@ -735,19 +735,18 @@ private extension FactCollector {
         return controlLabel(call, excluding: closure).map { "\(shown) \"\($0)\"" } ?? shown
     }
 
-    /// `secondaryAction:` pairs with `secondaryTitle:`, `action:` with `actionTitle:` or `title:`.
+    /// An action argument pairs with the title argument named after it: `secondaryAction:` with
+    /// `secondaryTitle:`, and `action:` with `actionTitle:` or else a configured title label.
     func pairedTitle(of label: String, in call: FunctionCallExprSyntax) -> String? {
         guard label.lowercased().hasSuffix("action") else { return nil }
 
         let prefix = String(label.dropLast("action".count))
-        let candidates = prefix.isEmpty ? ["actionTitle", "title"] : ["\(prefix)Title"]
-        for candidate in candidates {
-            if let argument = call.arguments.first(where: { $0.label?.text == candidate }),
-               let literal = argument.expression.as(StringLiteralExprSyntax.self)?.representedLiteralValue {
-                return literal
-            }
+        let named = prefix.isEmpty ? "actionTitle" : "\(prefix)Title"
+        let title = { (matches: (String) -> Bool) in
+            call.arguments.filter { matches($0.label?.text ?? "") }
+                .compactMap { $0.expression.as(StringLiteralExprSyntax.self)?.representedLiteralValue }.first
         }
-        return nil
+        return title { $0 == named } ?? (prefix.isEmpty ? title(configuration.titleLabels.contains) : nil)
     }
 
     /// The label of the argument an expression is passed as, looking through `cond ? x : nil`.
@@ -762,23 +761,23 @@ private extension FactCollector {
         return nil
     }
 
-    /// The words the user reads on a control: a title-like argument, else its `Text`, else the first
-    /// literal that is not an icon name (`Image("search")` is not the button's label).
+    /// The words the user reads on a control: an argument with a configured title label, else its
+    /// `Text`, else the first literal that is not the icon name of a configured icon view
+    /// (`Image("search")` is not the button's label).
     func controlLabel(_ call: FunctionCallExprSyntax, excluding closure: Syntax) -> String? {
-        for argument in call.arguments where ["title", "buttonTitle", "label"].contains(argument.label?.text ?? "") {
+        for argument in call.arguments where configuration.titleLabels.contains(argument.label?.text ?? "") {
             if let literal = argument.expression.as(StringLiteralExprSyntax.self)?.representedLiteralValue { return literal }
         }
         let calls = call.descendants(ofType: FunctionCallExprSyntax.self).filter { !$0.isDescendant(of: closure) }
         if let text = calls.first(where: { $0.calleeName == "Text" }), let literal = text.arguments.firstStringLiteral {
             return literal
         }
-        let iconCalls: Set<String> = ["ImageView", "Image", "Icon", "systemImage"]
         return call.descendants(ofType: StringLiteralExprSyntax.self)
             .filter { !$0.isDescendant(of: closure) }
             .first { literal in
                 let owner = literal.parent?.parent?.parent?.as(FunctionCallExprSyntax.self)
                 let label = literal.parent?.as(LabeledExprSyntax.self)?.label?.text
-                return !(owner.map { iconCalls.contains($0.calleeName) } ?? false) && label != "systemImage"
+                return !(owner.map { configuration.iconViews.contains($0.calleeName) } ?? false) && label != "systemImage"
             }?
             .representedLiteralValue
     }

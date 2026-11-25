@@ -17,6 +17,8 @@ struct OptionsTests {
         #expect(options.boundaries == nil)
         #expect(options.outDir == "/work/app/navigation-map")
         #expect(options.conditionModifiers == ["if"])
+        #expect(options.configuration.titleLabels == ["title", "label"])
+        #expect(options.configuration.iconViews == ["Image"])
     }
 
     @Test
@@ -25,7 +27,7 @@ struct OptionsTests {
             arguments: [
                 "--area", "Contacts", "AppFeature", "--sources", "App,Packages/Features", "--boundary", "/abs/Contacts,App/Shared",
                 "--ignore", "Launcher, Playground", "--screen-name-modifier", "trackScreen", "--condition-modifier", "when",
-                "--exclude", "Generated,/Mocks/", "--out", "../maps"
+                "--exclude", "Generated,/Mocks/", "--out", "../maps", "--title-label", "title,heading", "--icon-view", "Image,Glyph"
             ],
             currentDirectory: "/work/app"
         )
@@ -37,6 +39,8 @@ struct OptionsTests {
         #expect(options.configuration.screenNameModifiers == ["trackScreen"])
         #expect(options.configuration.conditionModifiers == ["when"])
         #expect(options.excludes == ["Generated", "/Mocks/"])
+        #expect(options.configuration.titleLabels == ["title", "heading"])
+        #expect(options.configuration.iconViews == ["Image", "Glyph"])
         #expect(options.outDir == "/work/maps")
     }
 

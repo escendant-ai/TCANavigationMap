@@ -57,6 +57,8 @@ tca-navmap AppFeature --sources App,Packages --area Contacts   # one area
 | `--ignore <Reducer>[,…]` | Reducers that are not a place a user goes, such as a debug launcher that embeds many features as standalone roots. They are left out, along with whatever only they reach. |
 | `--condition-modifier <name>[,…]` | Modifiers that apply their content conditionally. Default: `if`, for the common `.if(condition) { … } else: { … }` extension. |
 | `--screen-name-modifier <name>[,…]` | Modifiers that name a screen with a string literal, such as an analytics `.trackScreen("Profile")`. The names are listed per feature. |
+| `--title-label <name>[,…]` | Argument labels whose string literal is a control's title, for your own components: `heading` for `Card(heading: "Open") { … }`. Default: `title,label`. A list replaces the default. |
+| `--icon-view <name>[,…]` | Views whose string literal names an icon, so it is not read as a control's title. Default: `Image`. A list replaces the default. |
 | `--out <dir>` | Where the two files are written. Default: `navigation-map`. |
 
 Directories named `.build`, `.git`, `.swiftpm`, `Carthage`, `DerivedData` or `Pods`, and any directory whose name ends in `Tests`, are always skipped. A source directory that cannot be listed or a source file that cannot be read fails the run, because a file parsed as empty would silently drop its reducers from the map.

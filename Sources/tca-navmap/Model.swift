@@ -13,6 +13,12 @@ struct Configuration {
     /// View modifiers that name a screen with a string literal, such as an analytics
     /// `.trackScreen("Profile")`.
     var screenNameModifiers: Set<String> = []
+    /// Argument labels whose string literal is the title of a control: `Card(heading: "Open") { … }`
+    /// with `heading`.
+    var titleLabels: Set<String> = ["title", "label"]
+    /// Views whose string literal names an icon, so it is not read as a control's title:
+    /// `Image("search")`.
+    var iconViews: Set<String> = ["Image"]
 }
 
 /// A `@Reducer` struct or enum, keyed by its qualified name (`Contacts.Destination`).
